@@ -1,2 +1,2 @@
-Readme
+Hotel booking application backend
 =========
