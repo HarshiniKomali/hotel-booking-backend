@@ -28,8 +28,8 @@ db.mongoose
   }
   
 //routes
-const route = require("./routes/user.routes");
-app.use(route);
+const user_route = require("./routes/user.routes");
+app.use(user_route);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT,() => {
