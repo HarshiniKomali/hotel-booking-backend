@@ -2,7 +2,7 @@ const db = require("../models");
 const User = db.user;
 var bcrypt = require("bcryptjs");
 
-exports.signup = (req,res) => {
+exports.signUp = (req,res) => {
 	User.findOne({
 		email:req.body.email
 		})
@@ -11,17 +11,16 @@ exports.signup = (req,res) => {
 				res.status(500).send({message:err});
 				return;
 			}
-			if(user) {
+			else if(user) {
 				return res.status(404).send({message:"User already exists"});
 			}
 			else{
 					const user = new User({
 						email:req.body.email,
-						firstname:req.body.firstname,
-						lastname:req.body.lastname,
-						country:req.body.country,
-						city:req.body.city,
-						phonenumber:req.body.phonenumber,
+						firstName:req.body.firstname,
+						lastName:req.body.lastname,
+						dob:req.body.dob,
+						mobile:req.body.mobile,
 						password:bcrypt.hashSync(req.body.password,10)
 					});
 					user.save((err) => {
@@ -40,7 +39,7 @@ exports.signin = (req,res) => {
 		email:req.body.email
 	})
 		.exec((err,user) => {
-			console.log(user)
+			//console.log(user)
 			if(err) {
 				res.status(500).send({message:err});
 				return;
@@ -60,5 +59,44 @@ exports.signin = (req,res) => {
 				email:user.email
 			});
 		});
+};
+
+exports.updateProfile = (req,res) => {
+	User.findOne({
+		email:req.body.email
+	})
+		.exec((err,user) => {
+			if(err){
+				res.status(500).send({message:err});
+				return;
+			}
+			if(!user) {
+				return res.status(404).send({message:"User not found"});
+			}
+			if(req.body.firstname){
+				user.firstName = req.body.firstname;
+			}
+			if(req.body.lastname){
+				user.lastName = req.body.lastname;
+			}
+			if(req.body.dob){
+				user.dob = req.body.dob;
+			}
+			if(req.body.mobile){
+				user.mobile = req.body.mobile;
+			}
+			if(req.body.password){
+				user.password = bcrypt.hashSync(req.body.password,10);
+			}
+			user.save((err) => {
+				if(err) {
+					res.status(500).send({message:err});
+					return;
+				}
+				res.send({message:"Details updated successfully"});
+			});
+		});
+		
+
 };
 
