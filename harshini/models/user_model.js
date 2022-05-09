@@ -5,7 +5,7 @@ const Schema=mongoose.Schema;
 
 //Creating user schema and model
 
-const UserSchema =new Schema({
+const userSchema =new Schema({
 
 	firstName:{
 		type:String,
@@ -31,12 +31,19 @@ const UserSchema =new Schema({
 		type:String,
 		required:[true,'Mobile number is required']
 	},
+	country:{
+		type:String,
+	},
+	cit:{
+		type:String,
+	},
 	dateCreated:{
 		type:Date,
 		default:Date.now
 	}
 });
 
-const User = mongoose.model('User',UserSchema);
+const User = mongoose.model('User',userSchema);
 
 module.exports=User;
+
